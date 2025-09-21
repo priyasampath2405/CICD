@@ -9,7 +9,7 @@ export default function AppHeader() {
       <AppBar position="static">
         <Toolbar className="app-header">
           <Typography variant="h6" component="div" className="fg-1">
-            Priya Ruban
+            Ruban
           </Typography>
         </Toolbar>
       </AppBar>
