@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: frontend
+      target: dev
+    ports:
+      - "5173:5173"
+    expose:
+      - "5173"
+    volumes:
+      - ./frontend/src:/app/src
+    env_file:
+      - frontend/.env
+
+  backend:
+    build:
+      context: backend
+      target: dev
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    volumes:
+      - ./backend/src:/app/src
+    env_file:
+      - backend/.env
+    depends_on:
+      - database
+
+  database:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
