@@ -1,0 +1,36 @@
+name: Check Build
+
+on:
+  pull_request:
+    branches:
+      - main   # Runs only when a PR targets the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Node.js (adjust version if needed)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      # 3️⃣ Install & build Frontend
+      - name: Install & Build Frontend
+        working-directory: ./frontend
+        run: |
+          npm ci
+          npm run build
+
+      # 4️⃣ Install & build Backend
+      - name: Install & Build Backend
+        working-directory: ./backend
+        run: |
+          npm ci
+          npm run build
