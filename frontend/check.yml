@@ -1,0 +1,45 @@
+name: Check PR # The name of your pipeline/recipe
+
+# When should the robot chef start cooking?
+# When someone creates a new Pull Request targeting the "main" branch.
+on:
+  pull_request:
+    branches: [ main ]
+
+# The list of jobs the chef will do. Here we have one job called "build-and-test".
+jobs:
+  build-and-test:
+    # The chef needs a kitchen to work in. This tells it to use a clean, modern Ubuntu kitchen.
+    runs-on: ubuntu-latest
+
+    # Here are the step-by-step instructions for the chef.
+    steps:
+    # Step 1: Go get the code from the fridge (GitHub)
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2: Set up the right tools (Node.js)
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18' # Use Node.js version 18
+
+    # Step 3: Install the backend dependencies (like unpacking ingredients)
+    - name: Install Backend Dependencies
+      run: npm ci
+      working-directory: ./backend # 👈 Change this if your backend is in a different folder
+
+    # Step 4: Build the backend (like pre-heating the oven)
+    - name: Build Backend
+      run: npm run build
+      working-directory: ./backend # 👈 Change this if your backend is in a different folder
+
+    # Step 5: Install the frontend dependencies
+    - name: Install Frontend Dependencies
+      run: npm ci
+      working-directory: ./frontend # 👈 Change this to your frontend folder (e.g., ./client, ./web)
+
+    # Step 6: Build the frontend (this is where React gets made into static files)
+    - name: Build Frontend
+      run: npm run build
+      working-directory: ./frontend # 👈 Change this to your frontend folder
